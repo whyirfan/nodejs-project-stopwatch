@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web Stopwatch</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding-top: 50px;
+      }
+      #time {
+        font-size: 48px;
+        margin: 20px;
+      }
+      button {
+        font-size: 20px;
+        padding: 10px 20px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>⏱️ Web Stopwatch</h1>
+    <div id="time">00:00:00</div>
+    <button onclick="start()">Start</button>
+    <button onclick="stop()">Stop</button>
+    <button onclick="reset()">Reset</button>
+
+    <script>
+      let timer = null;
+      let elapsed = 0;
+
+      function format(ms) {
+        const total = Math.floor(ms / 1000);
+        const h = String(Math.floor(total / 3600)).padStart(2, "0");
+        const m = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+        const s = String(total % 60).padStart(2, "0");
+        return `${h}:${m}:${s}`;
+      }
+
+      function updateDisplay() {
+        document.getElementById("time").innerText = format(elapsed);
+      }
+
+      function start() {
+        if (!timer) {
+          const start = Date.now() - elapsed;
+          timer = setInterval(() => {
+            elapsed = Date.now() - start;
+            updateDisplay();
+          }, 1000);
+        }
+      }
+
+      function stop() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function reset() {
+        stop();
+        elapsed = 0;
+        updateDisplay();
+      }
+
+      updateDisplay();
+    </script>
+  </body>
+</html>
